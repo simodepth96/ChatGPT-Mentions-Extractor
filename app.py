@@ -19,7 +19,7 @@ st.sidebar.header("Configuration")
 
 # File upload
 uploaded_file = st.sidebar.file_uploader(
-    "Upload Excel file", 
+    "Upload Excel file",
     type=['xlsx', 'xls'],
     help="Upload your Excel file containing the data to analyze"
 )
@@ -40,27 +40,20 @@ color_scheme = st.sidebar.selectbox(
 # Process data when file is uploaded
 if uploaded_file is not None:
     try:
-        # Load data
         with st.spinner("Loading data..."):
             df = pd.read_excel(uploaded_file)
             df.columns = df.columns.str.lower()
-        
-        # Check if 'additional info' column exists
+
         if 'additional info' not in df.columns:
             st.error("❌ Column 'additional info' not found in the uploaded file. Please check your data.")
             st.write("Available columns:", list(df.columns))
         else:
-            # Data processing
             with st.spinner("Processing data..."):
-                # Identify branded mentions
                 df['brand mentions'] = df['additional info'].astype(str).str.contains(
                     brand_search, case=False, na=False
                 ).map({True: 'Yes', False: 'No'})
-                
-                # Identify sources of link mentions
+
                 col_str = df['additional info'].astype(str).str.lower()
-                
-                # Define conditions and choices
                 conditions = [
                     col_str.str.contains('youtube.com', na=False),
                     col_str.str.contains('facebook.com', na=False),
@@ -70,96 +63,73 @@ if uploaded_file is not None:
                     col_str.str.contains('wikipedia.org', na=False),
                     col_str.str.contains('tiktok.com', na=False)
                 ]
-                
                 choices = ['YouTube', 'Facebook', 'Instagram', 'Reddit', 'Quora', 'Wikipedia', 'TikTok']
-                
-                # Apply conditions with default value
                 df['source mention'] = np.select(conditions, choices, default='Organic')
-            
-            # Create columns for layout
-col1, col2 = st.columns([2, 1])
 
-with col1:
-    st.subheader("📈 Brand Mentions vs Source Mentions Heatmap")
+            col1, col2 = st.columns([2, 1])
 
-    # Create crosstab for heatmap
-    heatmap_data = pd.crosstab(df['source mention'], df['brand mentions'])
+            with col1:
+                st.subheader("📈 Brand Mentions vs Source Mentions Heatmap")
+                heatmap_data = pd.crosstab(df['source mention'], df['brand mentions'])
+                fig = go.Figure(data=go.Heatmap(
+                    z=heatmap_data.values,
+                    x=heatmap_data.columns,
+                    y=heatmap_data.index,
+                    colorscale=color_scheme,
+                    text=heatmap_data.values,
+                    texttemplate="%{text}",
+                    textfont={"size": 12},
+                    hoverongaps=False,
+                    hovertemplate='<b>Source:</b> %{y}<br>' +
+                                  '<b>Brand Mention:</b> %{x}<br>' +
+                                  '<b>Count:</b> %{z}<br>' +
+                                  '<extra></extra>'
+                ))
+                fig.update_layout(
+                    xaxis_title=f'Brand Mentions ({brand_search})',
+                    yaxis_title='Source Mentions',
+                    height=500,
+                    font=dict(size=11)
+                )
+                st.plotly_chart(fig, use_container_width=True)
 
-    # Create heatmap with Plotly
-    fig = go.Figure(data=go.Heatmap(
-        z=heatmap_data.values,
-        x=heatmap_data.columns,
-        y=heatmap_data.index,
-        colorscale=color_scheme,
-        text=heatmap_data.values,
-        texttemplate="%{text}",
-        textfont={"size": 12},
-        hoverongaps=False,
-        hovertemplate='<b>Source:</b> %{y}<br>' +
-                      '<b>Brand Mention:</b> %{x}<br>' +
-                      '<b>Count:</b> %{z}<br>' +
-                      '<extra></extra>'
-    ))
+            col_stats, col_chart = st.columns([1, 1])
 
-    # Update layout
-    fig.update_layout(
-        xaxis_title=f'Brand Mentions ({brand_search})',
-        yaxis_title='Source Mentions',
-        height=500,
-        font=dict(size=11)
-    )
+            with col_stats:
+                st.subheader("📊 Summary Statistics")
+                total_records = len(df)
+                brand_mentions_yes = len(df[df['brand mentions'] == 'Yes'])
+                brand_mentions_no = len(df[df['brand mentions'] == 'No'])
+                brand_mention_rate = (brand_mentions_yes / total_records * 100) if total_records > 0 else 0
+                st.metric("Total Records", total_records)
+                st.metric("Brand Mentions (Yes)", brand_mentions_yes)
+                st.metric("Brand Mentions (No)", brand_mentions_no)
+                st.metric("Brand Mention Rate", f"{brand_mention_rate:.1f}%")
 
-    # Display heatmap
-    st.plotly_chart(fig, use_container_width=True)
+            with col_chart:
+                st.subheader("📱 Source Distribution")
+                source_counts = df['source mention'].value_counts()
+                fig_pie = px.pie(
+                    values=source_counts.values,
+                    names=source_counts.index,
+                    title="Distribution by Source"
+                )
+                fig_pie.update_layout(height=400, font=dict(size=10))
+                st.plotly_chart(fig_pie, use_container_width=True)
 
-# Summary Stats and Pie Chart Side by Side
-col_stats, col_chart = st.columns([1, 1])
-
-with col_stats:
-    st.subheader("📊 Summary Statistics")
-
-    # Create metrics
-    total_records = len(df)
-    brand_mentions_yes = len(df[df['brand mentions'] == 'Yes'])
-    brand_mentions_no = len(df[df['brand mentions'] == 'No'])
-    brand_mention_rate = (brand_mentions_yes / total_records * 100) if total_records > 0 else 0
-
-    # Display metrics
-    st.metric("Total Records", total_records)
-    st.metric("Brand Mentions (Yes)", brand_mentions_yes)
-    st.metric("Brand Mentions (No)", brand_mentions_no)
-    st.metric("Brand Mention Rate", f"{brand_mention_rate:.1f}%")
-
-with col_chart:
-    st.subheader("📱 Source Distribution")
-    source_counts = df['source mention'].value_counts()
-
-    # Create pie chart for source distribution
-    fig_pie = px.pie(
-        values=source_counts.values,
-        names=source_counts.index,
-        title="Distribution by Source"
-    )
-    fig_pie.update_layout(height=400, font=dict(size=10))
-    st.plotly_chart(fig_pie, use_container_width=True)
-
-            
-            # Data tables section
             st.subheader("📋 Data Overview")
-            
-            # Create tabs for different views
             tab1, tab2, tab3 = st.tabs(["Raw Data Preview", "Crosstab Results", "Source Breakdown"])
-            
+
             with tab1:
                 st.write("**First 10 rows of processed data:**")
                 display_cols = ['additional info', 'brand mentions', 'source mention']
                 available_cols = [col for col in display_cols if col in df.columns]
                 st.dataframe(df[available_cols].head(10), use_container_width=True)
-            
+
             with tab2:
                 st.write("**Crosstab: Brand Mentions vs Source Mentions**")
                 st.dataframe(heatmap_data, use_container_width=True)
-            
+
             with tab3:
                 st.write("**Detailed Source Breakdown**")
                 breakdown_df = df.groupby(['source mention', 'brand mentions']).size().reset_index(name='count')
@@ -167,11 +137,8 @@ with col_chart:
                 breakdown_pivot['Total'] = breakdown_pivot.sum(axis=1)
                 breakdown_pivot = breakdown_pivot.sort_values('Total', ascending=False)
                 st.dataframe(breakdown_pivot, use_container_width=True)
-            
-            # Download processed data
+
             st.subheader("💾 Download Processed Data")
-            
-            # Create download button for processed data
             csv_data = df.to_csv(index=False)
             st.download_button(
                 label="Download processed data as CSV",
@@ -179,15 +146,13 @@ with col_chart:
                 file_name=f"processed_data_{brand_search.replace('.', '_')}.csv",
                 mime="text/csv"
             )
-    
+
     except Exception as e:
         st.error(f"❌ Error processing file: {str(e)}")
         st.write("Please check that your file is a valid Excel file with the correct format.")
 
 else:
-    # Show instructions when no file is uploaded
     st.info("👆 Please upload an Excel file to start the analysis")
-    
     st.markdown("""
     ### Instructions:
     1. **Upload your Excel file** using the file uploader in the sidebar
@@ -198,11 +163,11 @@ else:
        - Summary statistics and metrics
        - Source distribution pie chart
        - Detailed data tables
-    
+
     ### Required Data Format:
     - Your Excel file should contain a column named **'Prompt'**, **'Content'**, or **'Additional info'**
     - The headers are left unchanged from an export of search queries using the [ChatGPT for Search Chrome Extension](https://chromewebstore.google.com/detail/chatgpt-path/kiopibcjdnlpamdcdcnphaajccobkban)
-    
+
     ### Supported Sources:
     - YouTube, Facebook, Instagram, Reddit, Quora, Wikipedia, TikTok
     - All other sources are categorized as 'Organic'
