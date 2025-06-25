@@ -121,10 +121,10 @@ if uploaded_file is not None:
             tab1, tab2, tab3 = st.tabs(["Raw Data Preview", "Crosstab Results", "Source Breakdown"])
 
             with tab1:
-                st.write("**First 25 rows of processed data:**")
+                st.write("**First rows of processed data:**")
                 display_cols = ['additional info', 'brand mentions', 'source mention']
                 available_cols = [col for col in display_cols if col in df.columns]
-                st.dataframe(df[available_cols].head(25), use_container_width=True)
+                st.dataframe(df[available_cols].head(50), use_container_width=True)
 
             with tab2:
                 st.write("**Crosstab: Brand Mentions vs Source Mentions**")
