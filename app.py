@@ -27,7 +27,6 @@ uploaded_file = st.sidebar.file_uploader(
 # Brand search input
 brand_search = st.sidebar.text_input(
     "Brand to search for",
-    value="yourbrand.com",
     help="Enter the brand/domain you want to search for in the 'additional info' column"
 )
 
@@ -187,7 +186,7 @@ else:
     st.markdown("""
     ### Instructions:
     1. **Upload your Excel file** using the file uploader in the sidebar
-    2. **Enter the brand/domain** you want to search for (default: yourbrand.com)
+    2. **Enter the brand/domain** you want to search for 
     3. **Choose a color scheme** for the heatmap visualization
     4. The app will automatically process your data and generate:
        - Interactive heatmap showing brand mentions vs source mentions
@@ -196,8 +195,8 @@ else:
        - Detailed data tables
     
     ### Required Data Format:
-    - Your Excel file should contain a column named **'Prompt'**, **'Content'**, **'Additional info'** from an export file from **'ChatGPT for Search'** chrome extension
-    - This column contains all ChatGPT linked citations from the output of a prompt
+    - Your Excel file should contain a column named **'Prompt'**, **'Content'**, or **'Additional info'**
+    - The headers are left unchanged from an export of search queries using the [ChatGPT for Search Chrome Extension](https://chromewebstore.google.com/detail/chatgpt-path/kiopibcjdnlpamdcdcnphaajccobkban)
     
     ### Supported Sources:
     - YouTube, Facebook, Instagram, Reddit, Quora, Wikipedia, TikTok
