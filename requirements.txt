@@ -1,0 +1,8 @@
+altair==4.2.0
+streamlit==1.14.0
+pandas
+requests
+openpyxl
+nltk==3.6.3
+advertools==0.16.6
+adviz
