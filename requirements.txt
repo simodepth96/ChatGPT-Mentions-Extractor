@@ -6,3 +6,4 @@ openpyxl
 nltk==3.6.3
 advertools==0.16.6
 adviz
+imghdr
