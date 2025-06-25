@@ -77,42 +77,42 @@ if uploaded_file is not None:
                 df['source mention'] = np.select(conditions, choices, default='Organic')
             
             # Create columns for layout
-            col1, col2 = st.columns([2, 1])
-            
-            with col1:
-                st.subheader("📈 Brand Mentions vs Source Mentions Heatmap")
-                
-                # Create crosstab for heatmap
-                heatmap_data = pd.crosstab(df['source mention'], df['brand mentions'])
-                
-                # Create heatmap with Plotly
-                fig = go.Figure(data=go.Heatmap(
-                    z=heatmap_data.values,
-                    x=heatmap_data.columns,
-                    y=heatmap_data.index,
-                    colorscale=color_scheme,
-                    text=heatmap_data.values,
-                    texttemplate="%{text}",
-                    textfont={"size": 12},
-                    hoverongaps=False,
-                    hovertemplate='<b>Source:</b> %{y}<br>' +
-                                  '<b>Brand Mention:</b> %{x}<br>' +
-                                  '<b>Count:</b> %{z}<br>' +
-                                  '<extra></extra>'
-                ))
-                
-                # Update layout
-                fig.update_layout(
-                    xaxis_title=f'Brand Mentions ({brand_search})',
-                    yaxis_title='Source Mentions',
-                    height=500,
-                    font=dict(size=11)
-                )
-                
-                # Display heatmap
-                st.plotly_chart(fig, use_container_width=True)
-                
-                # Create two columns side by side
+col1, col2 = st.columns([2, 1])
+
+with col1:
+    st.subheader("📈 Brand Mentions vs Source Mentions Heatmap")
+
+    # Create crosstab for heatmap
+    heatmap_data = pd.crosstab(df['source mention'], df['brand mentions'])
+
+    # Create heatmap with Plotly
+    fig = go.Figure(data=go.Heatmap(
+        z=heatmap_data.values,
+        x=heatmap_data.columns,
+        y=heatmap_data.index,
+        colorscale=color_scheme,
+        text=heatmap_data.values,
+        texttemplate="%{text}",
+        textfont={"size": 12},
+        hoverongaps=False,
+        hovertemplate='<b>Source:</b> %{y}<br>' +
+                      '<b>Brand Mention:</b> %{x}<br>' +
+                      '<b>Count:</b> %{z}<br>' +
+                      '<extra></extra>'
+    ))
+
+    # Update layout
+    fig.update_layout(
+        xaxis_title=f'Brand Mentions ({brand_search})',
+        yaxis_title='Source Mentions',
+        height=500,
+        font=dict(size=11)
+    )
+
+    # Display heatmap
+    st.plotly_chart(fig, use_container_width=True)
+
+# Summary Stats and Pie Chart Side by Side
 col_stats, col_chart = st.columns([1, 1])
 
 with col_stats:
