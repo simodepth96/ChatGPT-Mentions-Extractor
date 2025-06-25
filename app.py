@@ -112,32 +112,37 @@ if uploaded_file is not None:
                 # Display heatmap
                 st.plotly_chart(fig, use_container_width=True)
                 
-                
-            st.subheader("📊 Summary Statistics")
-                
-            # Create metrics
-            total_records = len(df)
-            brand_mentions_yes = len(df[df['brand mentions'] == 'Yes'])
-            brand_mentions_no = len(df[df['brand mentions'] == 'No'])
-            brand_mention_rate = (brand_mentions_yes / total_records * 100) if total_records > 0 else 0
-                
-            # Display metrics
-            st.metric("Total Records", total_records)
-            st.metric("Brand Mentions (Yes)", brand_mentions_yes)
-            st.metric("Brand Mentions (No)", brand_mentions_no)
-            st.metric("Brand Mention Rate", f"{brand_mention_rate:.1f}%")
-                
-            st.subheader("📱 Source Distribution")
-            source_counts = df['source mention'].value_counts()
-                
-            # Create pie chart for source distribution
-            fig_pie = px.pie(
-                values=source_counts.values,
-                names=source_counts.index,
-                title="Distribution by Source"
-            )
-            fig_pie.update_layout(height=400, font=dict(size=10))
-            st.plotly_chart(fig_pie, use_container_width=True)
+                # Create two columns side by side
+col_stats, col_chart = st.columns([1, 1])
+
+with col_stats:
+    st.subheader("📊 Summary Statistics")
+
+    # Create metrics
+    total_records = len(df)
+    brand_mentions_yes = len(df[df['brand mentions'] == 'Yes'])
+    brand_mentions_no = len(df[df['brand mentions'] == 'No'])
+    brand_mention_rate = (brand_mentions_yes / total_records * 100) if total_records > 0 else 0
+
+    # Display metrics
+    st.metric("Total Records", total_records)
+    st.metric("Brand Mentions (Yes)", brand_mentions_yes)
+    st.metric("Brand Mentions (No)", brand_mentions_no)
+    st.metric("Brand Mention Rate", f"{brand_mention_rate:.1f}%")
+
+with col_chart:
+    st.subheader("📱 Source Distribution")
+    source_counts = df['source mention'].value_counts()
+
+    # Create pie chart for source distribution
+    fig_pie = px.pie(
+        values=source_counts.values,
+        names=source_counts.index,
+        title="Distribution by Source"
+    )
+    fig_pie.update_layout(height=400, font=dict(size=10))
+    st.plotly_chart(fig_pie, use_container_width=True)
+
             
             # Data tables section
             st.subheader("📋 Data Overview")
