@@ -6,13 +6,12 @@ import plotly.express as px
 
 # Set page config
 st.set_page_config(
-    page_title="Brand Mentions vs Source Analysis",
-    page_icon="📊",
+    page_title="ChatGPT Mentions & Sources Analysis",
     layout="wide"
 )
 
 # App title and description
-st.title("📊 Brand Mentions vs Source Mentions Analysis")
+st.title("ChatGPT Mentions & Sources Analysis")
 st.markdown("Upload your Excel file and analyze brand mentions across different sources")
 
 # Sidebar for inputs
@@ -28,7 +27,7 @@ uploaded_file = st.sidebar.file_uploader(
 # Brand search input
 brand_search = st.sidebar.text_input(
     "Brand to search for",
-    value="audi.it",
+    value="yourbrand.com",
     help="Enter the brand/domain you want to search for in the 'additional info' column"
 )
 
@@ -105,12 +104,6 @@ if uploaded_file is not None:
                 
                 # Update layout
                 fig.update_layout(
-                    title={
-                        'text': f'Brand Mentions ({brand_search}) vs Source Mentions',
-                        'x': 0.5,
-                        'xanchor': 'center',
-                        'font': {'size': 16}
-                    },
                     xaxis_title=f'Brand Mentions ({brand_search})',
                     yaxis_title='Source Mentions',
                     height=500,
@@ -125,7 +118,7 @@ if uploaded_file is not None:
                 
                 # Create metrics
                 total_records = len(df)
-                brand_mentions_yes = len(df[df['brand mentions'] == 'Si'])
+                brand_mentions_yes = len(df[df['brand mentions'] == 'Yes'])
                 brand_mentions_no = len(df[df['brand mentions'] == 'No'])
                 brand_mention_rate = (brand_mentions_yes / total_records * 100) if total_records > 0 else 0
                 
@@ -194,7 +187,7 @@ else:
     st.markdown("""
     ### Instructions:
     1. **Upload your Excel file** using the file uploader in the sidebar
-    2. **Enter the brand/domain** you want to search for (default: audi.it)
+    2. **Enter the brand/domain** you want to search for (default: yourbrand.com)
     3. **Choose a color scheme** for the heatmap visualization
     4. The app will automatically process your data and generate:
        - Interactive heatmap showing brand mentions vs source mentions
@@ -203,8 +196,8 @@ else:
        - Detailed data tables
     
     ### Required Data Format:
-    - Your Excel file should contain a column named **'additional info'**
-    - This column should contain text data where brand mentions and source URLs can be found
+    - Your Excel file should contain a column named **'Prompt'**, **'Content'**, **'Additional info'** from an export file from **'ChatGPT for Search'** chrome extension
+    - This column contains all ChatGPT linked citations from the output of a prompt
     
     ### Supported Sources:
     - YouTube, Facebook, Instagram, Reddit, Quora, Wikipedia, TikTok
@@ -213,4 +206,4 @@ else:
 
 # Footer
 st.markdown("---")
-st.markdown("Built with ❤️ using Streamlit and Plotly")
+st.markdown("Built with ❤️ by [SEO Depths](https://seodepths.com/)")
