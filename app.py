@@ -6,12 +6,12 @@ import plotly.express as px
 
 # Set page config
 st.set_page_config(
-    page_title="ChatGPT Mentions & Sources Analysis",
+    page_title="ChatGPT Mentions & Traffic Referrals Analysis",
     layout="wide"
 )
 
 # App title and description
-st.title("ChatGPT Mentions & Sources Analysis")
+st.title("ChatGPT Mentions & Traffic Referrals Analysis")
 st.markdown("Upload your Excel file and analyze brand mentions across different sources")
 
 # Sidebar for inputs
