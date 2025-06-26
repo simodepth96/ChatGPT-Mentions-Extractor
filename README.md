@@ -58,23 +58,6 @@ javascript:(async()=>{try{const c=location.pathname.match(/\/chat\/([^/]+)/)?.[1
 ```
 
 
-## 🐍 JSON to CSV Conversion (Python)
-
-If your LLM exports are in JSON, convert them to CSV for analysis:
-
-```python
-import pandas as pd
-import json
-
-with open('perplexity-export.json') as f:
-    data = json.load(f)
-
-# Adjust this extraction logic based on JSON structure
-df = pd.json_normalize(data['conversations'])
-df.to_csv('output.csv', index=False)
-```
-
-
 ## ⚠️ Caveats \& Notes
 
 - **Attribution Issues:**
