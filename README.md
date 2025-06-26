@@ -36,33 +36,33 @@ Analyze your brand's authority and citation patterns across leading Large Langua
 As the app reads in the file, leave the red-circled box in the image below empty. This will give you an overview of the referrals sourced from the prompt. More on how this is calculated below.
 
 6. **Fill up the brand box to see how many mentions for your domain**
-[!streamlit_](https://github.com/simodepth96/ChatGPT-Mentions-Extractor/blob/main/images/streamlit_app_6.jpg)
+[!Streamlit](https://github.com/simodepth96/ChatGPT-Mentions-Extractor/blob/main/images/streamlit_app_6.jpg)
 
 7. **Scroll for some Summary Stats**
-[!stats](https://github.com/simodepth96/ChatGPT-Mentions-Extractor/blob/main/images/streamlit_app_summary_stats_7.jpg)
+[!Streamlit](https://github.com/simodepth96/ChatGPT-Mentions-Extractor/blob/main/images/streamlit_app_summary_stats_7.jpg)
 
 8. **Browse the full table in Data Overview**
-[!data overview](https://github.com/simodepth96/ChatGPT-Mentions-Extractor/blob/main/images/strealit_app_data_over_8.jpg)
+[!Streamlit](https://github.com/simodepth96/ChatGPT-Mentions-Extractor/blob/main/images/strealit_app_data_over_8.jpg)
 
 
-## ⚠️ Caveats \& Notes
+## ⚠️ Caveats /& Notes
 
-The app generates a heatmap, with the Y-axis showing link occurrences by traffic referral source.
-- **Source Classification:**
-Link sources are classified using rule-based logic and labeled accordingly.
+- **Rule-based Classification of Traffic Referrals**
+The system may not work as expected in case a specific traffic source is returned in the raw chatGPT output that is not contained in the classification at the code 
 - **Live Data Updates:**
-Enter your domain in the search bar to update the heatmap and data summaries in real time.
-- **Attribution Issues:**
+You can update the heatmap and data summaries in real time if you enter a different domain in the search bar
+- **Issues with Stochastic and Analytics Attribution:**
 Some analytics platforms (e.g., GA4) may not accurately report traffic referrals from ChatGPT or other LLMs.
-- **Stochastic Outputs:**
-LLMs may generate non-existent URLs or "hallucinate" sources. Always verify extracted links.
+Plus, LLMs may generate non-existent URLs due to dysfunctions in the RAG systems or in the probability distribution outcomes. Always verify extracted links.
 - **Streamlit App is Free to use outside this space:**
   No password-protected files or API has been leveraged so it's just free.
 
 
-## 🛠️ LLM Data Extraction Bookmarklets
+## 🛠️ Fetch Meta Data from Other LLM such as **Perplexity** and **Claude**
 
-Expand your research to other LLMs using these bookmarklets:
+All you need is another raw JSON file you can extract from conversations with Perplexity and Claude.
+
+No Chrome Extensions this time, just use the following bookmarklets:
 
 ### Perplexity Grounded Query Extractor
 
