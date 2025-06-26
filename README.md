@@ -5,7 +5,7 @@ This toolkit helps you track down backlinks and traffic referrals from one or mo
 
 ## 🔗 Link to the App 
 
-- [ChatGPT Mentions Visualizer (Streamlit)](https://chatgpt-mentions-visualizer.streamlit.app/)
+- [ChatGPT Mentions & Traffic Referrals Analysis (Streamlit)](https://chatgpt-mentions-visualizer.streamlit.app/)
 
 ## 🚀 Use Cases
 
@@ -20,7 +20,7 @@ This toolkit helps you track down backlinks and traffic referrals from one or mo
 ![ChatGPT Search Example](https://github.com/simodepth96/ChatGPT-Mentions-Extractor/blob/main/images/chatgpt_search_1.png?raw=true)
 
 
-2. **Open the ChatGPT Path Chrome extension**
+2. **Open the [  ChatGPT Path Chrome extension](https://chromewebstore.google.com/detail/-path/kiopibcjdnlpamdcdcnphaajccobkban)**
 ![ChatGPT Path](https://github.com/simodepth96/ChatGPT-Mentions-Extractor/blob/main/images/chatgpt_path_extension_2.png)
 
 3. **Run the Export**
