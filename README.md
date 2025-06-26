@@ -11,33 +11,53 @@ Analyze your brand's authority and citation patterns across leading Large Langua
 
 ## 📝 Data Preparation
 
-Before uploading your data, follow these steps for a clean, standardized input:
-
-1. **Consolidate Columns:**
-Ensure your spreadsheet has a single tab with the following headers:
-    - `Prompt`
-    - `Content`
-    - `Assitional Info`
-2. **Header Adjustments:**
-    - Replace any `Type` header with `Prompt` (this should contain the exact prompt used for LLM research).
-    - Remove the `timestamp` column.
-    - Optionally remove top rows containing grounded/normalized queries from the prompt.
-3. **Example Table**
+1. **Run a search on ChatGPT with the Search Mode on**  
+![ChatGPT Search Example](https://github.com/simodepth96/ChatGPT-Mentions-Extractor/blob/main/images/chatgpt_search_1.png?raw=true)
 
 
-| Prompt | Content | Assitional Info |
-| :-- | :-- | :-- |
-| "Find brand mentions" | "Our brand is cited on example.com and xyz.net" | "ChatGPT, 2025-06-25" |
+2. **Open the ChatGPT Path Chrome extension**
+![ChatGPT Path](https://github.com/simodepth96/ChatGPT-Mentions-Extractor/blob/main/images/chatgpt_path_extension_2.png)
+
+3. **Run the Export**
+![ChatGPT export](https://github.com/simodepth96/ChatGPT-Mentions-Extractor/blob/main/images/export_raw_3.jpg)
+
+4. **Data Cleaning and Save as .xlsx**
+   - **Remove the top rows (up to Source)**
+   - **Remove `Index` and `Timestamp` headers**
+   - **Replace any `Type` header with `Prompt`** (this should contain the exact prompt you used on ChatGPT).
+![ChatGPT export](https://github.com/simodepth96/ChatGPT-Mentions-Extractor/blob/main/images/export_finesse_4.jpg)
 
 
-## 📊 How It Works
+## 📊 How to use the app
 
-- **Upload XLSX file:**
+1. **Upload the cleaned XLSX file:**
+![Streamlit](https://github.com/simodepth96/ChatGPT-Mentions-Extractor/blob/main/images/streamlit_app_no_search_box_%25.jpg)
+
+As the app reads in the file, leave the red-circled box in the image below empty. This will give you an overview of the referrals sourced from the prompt. More on how this is calculated below.
+
+6. **Fill up the brand box to see how many mentions for your domain**
+[!streamlit_](https://github.com/simodepth96/ChatGPT-Mentions-Extractor/blob/main/images/streamlit_app_6.jpg)
+
+7. **Scroll for some Summary Stats**
+[!stats](https://github.com/simodepth96/ChatGPT-Mentions-Extractor/blob/main/images/streamlit_app_summary_stats_7.jpg)
+
+8. **Browse the full table in Data Overview**
+[!data overview](https://github.com/simodepth96/ChatGPT-Mentions-Extractor/blob/main/images/strealit_app_data_over_8.jpg)
+
+
+## ⚠️ Caveats \& Notes
+
 The app generates a heatmap, with the Y-axis showing link occurrences by traffic referral source.
 - **Source Classification:**
 Link sources are classified using rule-based logic and labeled accordingly.
 - **Live Data Updates:**
 Enter your domain in the search bar to update the heatmap and data summaries in real time.
+- **Attribution Issues:**
+Some analytics platforms (e.g., GA4) may not accurately report traffic referrals from ChatGPT or other LLMs.
+- **Stochastic Outputs:**
+LLMs may generate non-existent URLs or "hallucinate" sources. Always verify extracted links.
+- **Streamlit App is Free to use outside this space:**
+  No password-protected files or API has been leveraged so it's just free.
 
 
 ## 🛠️ LLM Data Extraction Bookmarklets
@@ -56,16 +76,6 @@ javascript:(async()=>{const s=(location.pathname.match(/\/search\/([^/?#]+)/)||[
 ```javascript
 javascript:(async()=>{try{const c=location.pathname.match(/\/chat\/([^/]+)/)?.[1];if(!c){alert('Open%20a%20Claude%20chat%20first');return;}const t=Date.now();const o=(await(await fetch(`/api/organizations?_t=${t}`,{credentials:'include',cache:'no-cache'})).json())[0].uuid;const j=await(await fetch(`/api/organizations/${o}/chat_conversations/${c}?tree=true&rendering_mode=messages&render_all_tools=true&_t=${t}`,{credentials:'include',cache:'no-cache'})).json();const u=URL.createObjectURL(new Blob([JSON.stringify(j,null,2)],{type:'application/json'}));Object.assign(document.createElement('a'),{href:u,download:`claude-${c}-rich.json`}).click();setTimeout(()=>URL.revokeObjectURL(u),2000);}catch(e){alert('Could%20not%20fetch%20rich%20conversation%20JSON');console.error(e);}})();
 ```
-
-
-## ⚠️ Caveats \& Notes
-
-- **Attribution Issues:**
-Some analytics platforms (e.g., GA4) may not accurately report traffic referrals from ChatGPT or other LLMs.
-- **Stochastic Outputs:**
-LLMs may generate non-existent URLs or "hallucinate" sources. Always verify extracted links.
-- **Streamlit App is Free to use outside this space:**
-  No password-protected files or API has been leveraged so it's just free.
 
 
 ## 🔗 Link to the App 
