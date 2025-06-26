@@ -166,7 +166,7 @@ else:
 
     ### Required Data Format:
     - Your Excel file should contain a column named **'Prompt'**, **'Content'**, or **'Additional info'**
-    - The headers are left unchanged from an export of search queries using the [ChatGPT for Search Chrome Extension](https://chromewebstore.google.com/detail/chatgpt-path/kiopibcjdnlpamdcdcnphaajccobkban)
+    - The headers are left unchanged from an export of search queries using the [ for Search Chrome Extension](https://chromewebstore.google.com/detail/-path/kiopibcjdnlpamdcdcnphaajccobkban)
 
     ### Supported Sources:
     - YouTube, Facebook, Instagram, Reddit, Quora, Wikipedia, TikTok
